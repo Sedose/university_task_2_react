@@ -6,13 +6,15 @@ import {
   Container,
 } from '@mui/material'
 import styled from 'styled-components'
-import Control from './control/Control'
+import Control from './Control/Control'
 import { toast, ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import { Either, Left } from 'purify-ts'
 import { create, all } from 'mathjs'
+import Download from './Download/Download'
+const FileSaver = require('file-saver')
 
-const math = create(all, { })
+const math = create(all, {})
 
 const Calculator = styled.div`
   display: flex;
@@ -62,6 +64,20 @@ const App = () => {
     }
   }
 
+  const onDownloadClick = () => {
+    if (input && output) {
+      const fileBodyObject = {
+        Input: input,
+        Output: output,
+      }
+      const fileBody = JSON.stringify(fileBodyObject, null, 2)
+      const blob = new Blob([fileBody], { type: "application/json" })
+      FileSaver.saveAs(blob, "calculation-result.txt")
+    } else {
+      toast.error("Input or/and output is empty")
+    }
+  }
+
   return (
     <div className="App">
       <Container>
@@ -73,6 +89,7 @@ const App = () => {
           </IO>
           <Control onCellClick={onControlCellClick} />
         </Calculator>
+        <Download onDownloadClick={onDownloadClick} />
       </Container>
     </div>
   );
@@ -85,5 +102,3 @@ const isOperation = (value) => {
     it === value
   )
 }
-
-

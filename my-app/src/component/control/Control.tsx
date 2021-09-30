@@ -1,5 +1,5 @@
-import styled from 'styled-components';
-import { CellData } from './types';
+import styled from 'styled-components'
+import { CellData } from './types'
 
 const Control = ({ onCellClick }) => (
   <Container>
